@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
-import 'login/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
+
+import 'register/register_view.dart';
+import 'login/login_view.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   return runApp(
       GetMaterialApp(
           initialRoute: TaskAdmin.pageName,
           getPages: [
             GetPage(name: LoginView.pageName, page: () => LoginView()),
+            GetPage(name: RegisterView.pageName, page: () => RegisterView()),
           ],
           home: TaskAdmin()));
 }
@@ -23,7 +25,6 @@ class TaskAdmin extends StatelessWidget {
   TaskAdmin({Key? key}) : super(key: key);
 
   static const pageName = "/";
-  final RxBool _continueTo = RxBool(false);
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +40,9 @@ class TaskAdmin extends StatelessWidget {
             ElevatedButton(
                 onPressed: (() => Get.toNamed(LoginView.pageName)),
                 child: const Text("Sign in")),
-            // ElevatedButton(
-            //     onPressed: (() => Get.toNamed(RegisterView.pageName)),
-            //     child: const Text("Sign up"))
+            ElevatedButton(
+                onPressed: (() => Get.toNamed(RegisterView.pageName)),
+                child: const Text("Sign up"))
           ],
         ),
       ),
